@@ -7,6 +7,24 @@ from scipy.cluster.vq import kmeans2
 import numpy
 import matplotlib.delaunay as triang
 from scipy import spatial
+import math
+
+def portal_link_range(avg_reso_lvl):
+	return 160 * avg_reso_lvl**4
+
+def distance(origin, destination):
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    radius = 6371 # km
+
+    dlat = math.radians(lat2-lat1)
+    dlon = math.radians(lon2-lon1)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat1)) \
+        * math.cos(math.radians(lat2)) * math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = radius * c
+
+    return d
 
 def read_from_csv(csv_file_name):
 	portals = set()
